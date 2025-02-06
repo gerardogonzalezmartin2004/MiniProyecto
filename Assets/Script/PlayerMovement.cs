@@ -14,6 +14,13 @@ public class PlayerMovement : MonoBehaviour
     public int currentHealth;
     public bool isDeath = true;
 
+    [Header("DashConfiguración")]
+    public float velocityDash;
+    public float timeDash;
+    private float gravityInicial;
+    private bool doDash = true;// para hacer el dash
+    private bool moveDash = true;// para que no te puedas mover cuando estes haciedno el dash
+
     [Header("GroundConfiguración")]
     public LayerMask groundLayer;
     public Transform groundCheck;
@@ -23,17 +30,20 @@ public class PlayerMovement : MonoBehaviour
     [Header("CanvasConfiguración")]
     public TextMeshProUGUI pointsText;
 
+   
+    public TrailRenderer trailRenderer;
     Rigidbody2D rigidBody2D;
-    Animator animator;
+    public Animator animator;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        
         animator = GetComponent<Animator>();
         rigidBody2D = GetComponent<Rigidbody2D>();
         currentHealth = health;
-        
+        gravityInicial = rigidBody2D.gravityScale;
 
 
     }
@@ -41,20 +51,31 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Movement();
+        if (moveDash)
+        {
+            Movement();
+        }
+       
         CheckGround();
-
+        
+      
     }
     public void Movement()
     {
 
          float moveHorizontal = Input.GetAxisRaw("Horizontal");
         rigidBody2D.velocity = new Vector2(moveHorizontal * speed, rigidBody2D.velocity.y);
-        if (Input.GetKey(KeyCode.Space) && isOnGround)
+        if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
         {
             rigidBody2D.velocity = new Vector2(rigidBody2D.velocity.x, jumpForce);
             isOnGround = false;
         }
+        if (Input.GetKeyDown(KeyCode.LeftShift) && doDash )
+        {
+            StartCoroutine(Dash(moveHorizontal));
+
+        }
+
     }
     void CheckGround()
     {
@@ -69,4 +90,29 @@ public class PlayerMovement : MonoBehaviour
         }
     }
     */
+    private IEnumerator Dash(float direction)
+    {
+        moveDash = false;
+        doDash = false;
+        rigidBody2D.gravityScale = 0;
+        if( direction == 1)
+        {
+            rigidBody2D.velocity = new Vector2(velocityDash, 0);
+        }
+        else if( direction == -1)
+        {
+            rigidBody2D.velocity = new Vector2(-velocityDash, 0);
+        }
+        trailRenderer.emitting = true;
+        
+
+        yield return new WaitForSeconds(timeDash);
+
+        moveDash = true;
+        doDash = true;
+        rigidBody2D.gravityScale = gravityInicial;
+        trailRenderer.emitting = false;
+
+    }
+
 }
