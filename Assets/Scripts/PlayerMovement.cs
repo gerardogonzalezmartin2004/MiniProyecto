@@ -20,6 +20,8 @@ public class PlayerMovement : MonoBehaviour
     private float gravityInicial;
     private bool doDash = true;// para hacer el dash
     private bool moveDash = true;// para que no te puedas mover cuando estes haciedno el dash
+    public float dashCooldown = 9f;// lo que dura el cooldown del dash
+    private bool canDash = true;// para el cooldown del dash
 
     [Header("GroundConfiguración")]
     public LayerMask groundLayer;
@@ -39,11 +41,12 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        isDeath = false;    
         animator = GetComponent<Animator>();
         rigidBody2D = GetComponent<Rigidbody2D>();
         currentHealth = health;
-        gravityInicial = rigidBody2D.gravityScale;
+        gravityInicial = rigidBody2D.gravityScale; // se guarda la gravedad para poder vovler a introducirla cuando la quitemos en el dash
+        Debug.Log("la vida es:" + currentHealth);
 
 
     }
@@ -69,10 +72,12 @@ public class PlayerMovement : MonoBehaviour
         {
             rigidBody2D.velocity = new Vector2(rigidBody2D.velocity.x, jumpForce);
             isOnGround = false;
+            Debug.Log("Salto realizado");
         }
-        if (Input.GetKeyDown(KeyCode.LeftShift) && doDash )
+        if (Input.GetKeyDown(KeyCode.LeftShift) && doDash && canDash)
         {
             StartCoroutine(Dash(moveHorizontal));
+            Debug.Log("Se hace el dash");
 
         }
 
@@ -80,6 +85,7 @@ public class PlayerMovement : MonoBehaviour
     void CheckGround()
     {
         isOnGround = Physics2D.OverlapCircle(groundCheck.position,groundRadius,groundLayer);//detecta colisiones en un rango circular y he puesot(una posiicon, el radio del circula, una capa)
+        //Debug.Log("esta en el suelo");
     }
     /*
     private void OnCollisionEnter2D(Collision2D collision)
@@ -90,29 +96,57 @@ public class PlayerMovement : MonoBehaviour
         }
     }
     */
+    public void TakeDamage(int damageAmount)
+    {
+        if (!isDeath)
+        {
+            currentHealth -= damageAmount;
+            currentHealth = Mathf.Clamp(currentHealth, minHealth, maxHealth);
+            Debug.Log("El jugador se ha dañado. Su vida actual es :" + currentHealth);
+            if (currentHealth == 0)
+            {
+                isDeath = true;
+                Debug.Log("Estas muerto");
+            }
+        }
+
+    }
+    public void Heal(int healAmount)
+    {
+        currentHealth += healAmount;
+        currentHealth = Mathf.Clamp(currentHealth, minHealth, maxHealth);
+        Debug.Log("El jugador se ha curado. Su vida actual es :" + currentHealth);
+
+    }
     private IEnumerator Dash(float direction)
     {
         moveDash = false;
         doDash = false;
-        rigidBody2D.gravityScale = 0;
-        if( direction == 1)
-        {
-            rigidBody2D.velocity = new Vector2(velocityDash, 0);
-        }
-        else if( direction == -1)
-        {
-            rigidBody2D.velocity = new Vector2(-velocityDash, 0);
-        }
-        trailRenderer.emitting = true;
-        
+        canDash = false;
+        rigidBody2D.gravityScale = 0; // esto se hace para que hacer el dash, la gravedad no afecte al movimiento del player y sea horizontal
 
-        yield return new WaitForSeconds(timeDash);
+            if (direction == 1)
+            {
+                rigidBody2D.velocity = new Vector2(velocityDash, 0);
+            }
+            else if (direction == -1)
+            {
+                rigidBody2D.velocity = new Vector2(-velocityDash, 0);
+            }
+            trailRenderer.emitting = true;
+
+     
+        yield return new WaitForSeconds(timeDash); // lo que dura el dash
 
         moveDash = true;
         doDash = true;
         rigidBody2D.gravityScale = gravityInicial;
         trailRenderer.emitting = false;
 
+        yield return new WaitForSeconds(dashCooldown);// Cooldown del dash
+
+        canDash = true;
+        
     }
 
 }
