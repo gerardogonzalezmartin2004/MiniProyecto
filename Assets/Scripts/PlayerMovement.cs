@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("PlayerConfiguración")]
     public float speed = 5f;
     public float jumpForce = 6f;
-    public int health = 10;
+    public int health = 7;
     public int maxHealth = 10;
     public int minHealth = 0;
     public int currentHealth;
@@ -31,6 +31,8 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("CanvasConfiguración")]
     public TextMeshProUGUI pointsText;
+    int points = 0;
+    public GameObject[] lifeBar; 
 
    
     public TrailRenderer trailRenderer;
@@ -103,6 +105,10 @@ public class PlayerMovement : MonoBehaviour
             currentHealth -= damageAmount;
             currentHealth = Mathf.Clamp(currentHealth, minHealth, maxHealth);
             Debug.Log("El jugador se ha dañado. Su vida actual es :" + currentHealth);
+            if (currentHealth >=0 && currentHealth < lifeBar.Length)
+            {
+                lifeBar[currentHealth].SetActive(false);
+            }
             if (currentHealth == 0)
             {
                 isDeath = true;
@@ -113,10 +119,20 @@ public class PlayerMovement : MonoBehaviour
     }
     public void Heal(int healAmount)
     {
-        currentHealth += healAmount;
-        currentHealth = Mathf.Clamp(currentHealth, minHealth, maxHealth);
-        Debug.Log("El jugador se ha curado. Su vida actual es :" + currentHealth);
-
+        if (!isDeath)
+        {
+            int newHealth = currentHealth;
+         currentHealth += healAmount;
+         currentHealth = Mathf.Clamp(currentHealth, minHealth, maxHealth);
+         Debug.Log("El jugador se ha curado. Su vida actual es :" + currentHealth);
+            for (int i = newHealth; i < currentHealth; i++)
+            {
+                if (i < lifeBar.Length)
+                {
+                    lifeBar[i].SetActive(true);
+                }
+            }
+        }
     }
     private IEnumerator Dash(float direction)
     {
@@ -147,6 +163,11 @@ public class PlayerMovement : MonoBehaviour
 
         canDash = true;
         
+    }
+    public void AddPoints(int coin)
+    {
+        points += coin;
+        pointsText.text = points.ToString();
     }
 
 }
