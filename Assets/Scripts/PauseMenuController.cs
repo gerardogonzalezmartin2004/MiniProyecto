@@ -41,7 +41,9 @@ public class PauseMenuController : MonoBehaviour
 
     public void QuitButton()
     {
+        Debug.Log("Estas fuera del juego..");
         Application.Quit();
+        
     }
 
     public void ContinueButton()
