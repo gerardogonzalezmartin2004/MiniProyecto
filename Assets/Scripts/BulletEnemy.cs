@@ -7,7 +7,12 @@ public class BulletEnemy : MonoBehaviour
 {
     public float velocityBullet;
     public int damage;
-    
+    public float destroyBullet;
+
+    private void Start()
+    {
+        Destroy(gameObject, destroyBullet);
+    }
     private void Update()
     {
         transform.Translate(Time.deltaTime * velocityBullet * Vector2.right);

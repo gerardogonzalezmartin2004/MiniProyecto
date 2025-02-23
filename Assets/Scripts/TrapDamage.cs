@@ -4,18 +4,43 @@ using UnityEngine;
 
 public class TrapDamage : MonoBehaviour
 {
-    public int trapDamage = 1;
+    public int damageAmountPerSecond = 1;  
+    public float damageInterval = 1f;      
+    public bool isDamaging = false;      
+    private PlayerMovement player;        
 
-    public void OnCollisionEnter2D(Collision2D collision)
+    
+    void OnCollisionEnter2D(Collision2D collision)
     {
-      
-
-        var player = collision.gameObject.GetComponent<PlayerMovement>();
-        if (player != null)
+        player = collision.gameObject.GetComponent<PlayerMovement>();
+        if (player != null && !isDamaging)
         {
-            Debug.Log("daño :" + trapDamage);
-            player.TakeDamage(trapDamage);
-          
+            StartCoroutine(DamagePlayerOverTime());
         }
     }
+
+    
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        if (player != null)
+        {
+            StopDamaging();
+        }
+    }
+
+   
+    IEnumerator DamagePlayerOverTime()
+    {
+        isDamaging = true;
+        while (isDamaging && player != null)
+        {
+            player.TakeDamage(damageAmountPerSecond);
+            yield return new WaitForSeconds(damageInterval);
+        }
+    }
+
+      void StopDamaging()
+      {       isDamaging = false;
+        StopCoroutine(DamagePlayerOverTime());
+      }
 }

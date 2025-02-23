@@ -18,7 +18,7 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        playerOnRange = Physics2D.Raycast(shootPoint.position, transform.right, distanceLine, playerMask);
+        playerOnRange = Physics2D.Raycast(shootPoint.position, transform.right, distanceLine, playerMask); // detecta al plakyer
         if (playerOnRange)
         {
             if (Time.time > timeBullet +timeLastBullet)
@@ -51,17 +51,17 @@ public class Enemy : MonoBehaviour
         var player = collision.gameObject.GetComponent<PlayerMovement>();
         if (player != null)
         {
-            if (collision.contacts[0].normal.y < -0.5f) // Si el jugador salta sobre el enemigo
+            if (collision.contacts[0].normal.y < -0.5f) // si el jugador salta sobre el enemigo: (el contact [] es un array que contiene toda l ainforamcion de los diferentes putos que entran encontacto y el [0]. normal, con los primeros puntos con los que tocan al player y es -0.5 es pq la fuerza viene de arriba a bajo
             {
                 Debug.Log("Enemigo eliminado!");
-                player.Jump(killForce); // Rebotamos al jugador
-                Destroy(gameObject); // Eliminamos al enemigo
-            }
-            else
-            {
-                Debug.Log($"El jugador ha recibido {enemyDamage} de daño.");
-                player.TakeDamage(enemyDamage); // Si no, le hacemos daño
-            }
+                player.Jump(killForce); 
+                Destroy(gameObject); 
+            }                   
+        }
+        if (player != null)
+        {
+            Debug.Log($"El jugador ha recibido {enemyDamage} de daño.");
+            player.TakeDamage(enemyDamage);
         }
     }
 }
