@@ -32,11 +32,13 @@ public class TrapCeiling : MonoBehaviour
         if (((1 << collision.gameObject.layer) & groundMask.value) != 0)  //  Convierte el número de capa en una máscara de bits y si el resultado es distinto de 0, significa que el objeto está en una capa permitida por groundMask
         {
             Destroy(gameObject);
+            
         }
 
         if (player != null)
         {
             player.TakeDamage(trapDamage);
+            Destroy(player);
         }
     }
 }

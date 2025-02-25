@@ -177,7 +177,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 isDeath = true;
                 Debug.Log("Estas muerto");
-                Invoke("GameOverScene",4f);
+                Invoke("GameOverScene",1f);
             }
         }
      

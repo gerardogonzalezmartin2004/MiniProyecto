@@ -16,6 +16,8 @@ public class Enemy : MonoBehaviour
     public int enemyDamage; // Daño que hace al jugador
     public float killForce; // Fuerza de rebote al matar al enemigo
 
+    public Animator animator;
+
     private void Update()
     {
         playerOnRange = Physics2D.Raycast(shootPoint.position, transform.right, distanceLine, playerMask); // detecta al plakyer
@@ -24,6 +26,7 @@ public class Enemy : MonoBehaviour
             if (Time.time > timeBullet +timeLastBullet)
             {
                 timeLastBullet = Time.time;
+                animator.SetTrigger("ShootBullet");
                 Invoke("Shoot", timeBullet);
             }
         }
@@ -56,12 +59,13 @@ public class Enemy : MonoBehaviour
                 Debug.Log("Enemigo eliminado!");
                 player.Jump(killForce); 
                 Destroy(gameObject); 
-            }                   
-        }
-        if (player != null)
+            }    
+              else 
         {
             Debug.Log($"El jugador ha recibido {enemyDamage} de daño.");
             player.TakeDamage(enemyDamage);
         }
     }
+        }
+      
 }
