@@ -26,19 +26,19 @@ public class TrapCeiling : MonoBehaviour
         Gizmos.DrawLine(transform.position, transform.position + Vector3.down * distanceLine);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        var player = collision.gameObject.GetComponent<PlayerMovement>();
-        if (((1 << collision.gameObject.layer) & groundMask.value) != 0)  //  Convierte el número de capa en una máscara de bits y si el resultado es distinto de 0, significa que el objeto está en una capa permitida por groundMask
+        var player = other.gameObject.GetComponent<PlayerMovement>();
+        if (((1 << other.gameObject.layer) & groundMask.value) != 0)  //  Convierte el número de capa en una máscara de bits y si el resultado es distinto de 0, significa que el objeto está en una capa permitida por groundMask
         {
             Destroy(gameObject);
             
         }
 
-        if (player != null)
+        if (other.gameObject.TryGetComponent(out DestruirJugador destroyplayer))
         {
-            player.TakeDamage(trapDamage);
-            Destroy(player);
+            destroyplayer.TakeDamageTrap();
         }
     }
+    
 }

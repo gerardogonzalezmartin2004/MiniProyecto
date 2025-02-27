@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour
     public GameObject bulletEnemy;
     public float timeBullet;
     public float timeLastBullet;
+    public float timeBetBullet;
     public int enemyDamage; // Daño que hace al jugador
     public float killForce; // Fuerza de rebote al matar al enemigo
 
@@ -27,7 +28,7 @@ public class Enemy : MonoBehaviour
             {
                 timeLastBullet = Time.time;
                 animator.SetTrigger("ShootBullet");
-                Invoke("Shoot", timeBullet);
+                Invoke("Shoot", timeBetBullet);
             }
         }
     }
