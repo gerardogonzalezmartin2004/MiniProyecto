@@ -266,13 +266,16 @@ public class PlayerMovement : MonoBehaviour
     }
     public void AddPoints(int coin)
     {
+        
         points += coin;
         pointsText.text = points.ToString();
     }
+    
     public void GameOverScene()
     {
         SceneManager.LoadScene("Game Over");
     }
-  
-   
 }
+
+
+
