@@ -52,13 +52,23 @@ public class PlayerMovement : MonoBehaviour
     [Header("StompConfiguración")]
     public int stompMarioDamage;// daaño al saltar encima de los enemys
     public float bounceMario;//rebote de fuerza al chocar
-   
+
+    [Header("Sound Configuración")]
+    public AudioSource audioSource;
+    public AudioClip jumpSound;
+    public AudioClip idleSound;
+    public AudioClip runSound;
+    public AudioClip dashSound;
+    public AudioClip hitSound;
+    public AudioClip deathSound;
+
 
 
     public TrailRenderer trailRenderer;
     Rigidbody2D rigidBody2D;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
+    private Dictionary<string, AudioClip> sonidos;
 
 
     // Start is called before the first frame update
@@ -75,6 +85,16 @@ public class PlayerMovement : MonoBehaviour
         gravityInicial = rigidBody2D.gravityScale; // se guarda la gravedad para poder vovler a introducirla cuando la quitemos en el dash
         Debug.Log("la vida es:" + currentHealth);
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        if(audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        sonidos = new Dictionary<string, AudioClip>
+        {
+            { "jump", jumpSound }, { "idle", idleSound }, { "run", runSound }, { "dash", dashSound }, { "hit", hitSound }, { "death", deathSound }
+        };
 
 
     }
