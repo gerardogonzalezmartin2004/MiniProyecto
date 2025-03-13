@@ -38,6 +38,7 @@ public class TrapCeiling : MonoBehaviour
         if (other.gameObject.TryGetComponent(out DestruirJugador destroyplayer))
         {
             destroyplayer.TakeDamageTrap();
+            player.GameOverScene();
         }
     }
     
