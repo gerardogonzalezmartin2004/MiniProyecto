@@ -6,14 +6,20 @@ using UnityEngine;
 public class HealObject : MonoBehaviour
 {
     public int pocion = 1;
+    public AudioClip healSound;
     public void OnTriggerEnter2D(Collider2D collision)
     {
         var player = collision.gameObject.GetComponent<PlayerMovement>();
         if (player != null)
         {
-            Debug.Log("daño :" + pocion);
-            player.Heal(pocion);
-            Destroy(gameObject);
+            if (player.currentHealth < player.maxHealth)
+            {
+                Debug.Log("daño :" + pocion);
+                player.Heal(pocion);
+                AudioSource.PlayClipAtPoint(healSound, transform.position);
+                Destroy(gameObject);
+            }
         }
+           
     }
 }

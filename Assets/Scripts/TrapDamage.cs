@@ -7,9 +7,11 @@ public class TrapDamage : MonoBehaviour
     public int damageAmountPerSecond = 1;  
     public float damageInterval = 1f;      
     public bool isDamaging = false;      
-    private PlayerMovement player;        
+    private PlayerMovement player;
 
-    
+    public AudioClip trapSound;
+
+
     void OnCollisionEnter2D(Collision2D collision)
     {
         player = collision.gameObject.GetComponent<PlayerMovement>();
@@ -35,6 +37,7 @@ public class TrapDamage : MonoBehaviour
         while (isDamaging && player != null)
         {
             player.TakeDamage(damageAmountPerSecond);
+            AudioSource.PlayClipAtPoint(trapSound, transform.position);
             yield return new WaitForSeconds(damageInterval);
         }
     }

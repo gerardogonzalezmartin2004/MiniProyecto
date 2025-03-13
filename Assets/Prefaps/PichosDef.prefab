@@ -101,6 +101,7 @@ MonoBehaviour:
   damageAmountPerSecond: 1
   damageInterval: 1
   isDamaging: 0
+  trapSound: {fileID: 8300000, guid: 943f613d112152a4a820e871a42dfc26, type: 3}
 --- !u!61 &2557222025543237048
 BoxCollider2D:
   m_ObjectHideFlags: 0

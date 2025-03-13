@@ -6,6 +6,7 @@ public class CollectibleItem : MonoBehaviour
 {
     
     public int pointsToAdd = 10;
+    public AudioClip collectSound;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         PlayerMovement player = collision.GetComponent<PlayerMovement>();
@@ -13,6 +14,7 @@ public class CollectibleItem : MonoBehaviour
         {
             Debug.Log("El jugador ha tocado el objeto");
             player.AddPoints(pointsToAdd);
+            AudioSource.PlayClipAtPoint(collectSound, transform.position);
             Destroy(gameObject);
         }
     }

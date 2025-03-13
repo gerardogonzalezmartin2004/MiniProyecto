@@ -57,7 +57,7 @@ public class PlayerMovement : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip jumpSound;
     public AudioClip idleSound;
-    public AudioClip runSound;
+    public AudioSource runSound;
     public AudioClip dashSound;
     public AudioClip hitSound;
     public AudioClip deathSound;
@@ -93,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
 
         sonidos = new Dictionary<string, AudioClip>
         {
-            { "jump", jumpSound }, { "idle", idleSound }, { "run", runSound }, { "dash", dashSound }, { "hit", hitSound }, { "death", deathSound }
+            { "jump", jumpSound }, { "idle", idleSound }, { "dash", dashSound }, { "hit", hitSound }, { "death", deathSound }
         };
 
 
@@ -130,18 +130,30 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
+
          float moveHorizontal = Input.GetAxisRaw("Horizontal");
-        animator.SetFloat("Horizontal", Mathf.Abs(moveHorizontal));
+        if (Input.GetKey(KeyCode.D)||Input.GetKey(KeyCode.A))
+        {
+            runSound.enabled = true;
+
+        }
+        else
+        {
+            runSound.enabled = false;
+        }
+            animator.SetFloat("Horizontal", Mathf.Abs(moveHorizontal));
         animator.SetFloat("VelocityY", rigidBody2D.velocity.y);
         rigidBody2D.velocity = new Vector2(moveHorizontal * speed, rigidBody2D.velocity.y);
         if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
         {
+            PlaySound("jump");
             rigidBody2D.velocity = new Vector2(rigidBody2D.velocity.x, jumpForce);
             isOnGround = false;
             Debug.Log("Salto realizado");
         }
         if (Input.GetKeyDown(KeyCode.LeftShift) && doDash && canDash && dashUnlolocked)
         {
+            PlaySound("dash");
             StartCoroutine(Dash(moveHorizontal));
             Debug.Log("Se hace el dash");
 
@@ -154,6 +166,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Girar();
         }
+      
 
     }
     private void Girar()
@@ -186,6 +199,7 @@ public class PlayerMovement : MonoBehaviour
         }
         if (!isDeath)
         {
+            PlaySound("hit");
             currentHealth -= damageAmount;
             currentHealth = Mathf.Clamp(currentHealth, minHealth, maxHealth);
             Debug.Log("El jugador se ha dañado. Su vida actual es :" + currentHealth);
@@ -196,6 +210,7 @@ public class PlayerMovement : MonoBehaviour
             if (currentHealth == 0)
             {
                 isDeath = true;
+                PlaySound("death");
                 Debug.Log("Estas muerto");
                 Invoke("GameOverScene",1f);
             }
@@ -294,6 +309,13 @@ public class PlayerMovement : MonoBehaviour
     public void GameOverScene()
     {
         SceneManager.LoadScene("Game Over");
+    }
+    void PlaySound(string soundName)
+    {
+        if (sonidos.ContainsKey(soundName) && sonidos[soundName] != null)
+        {
+            audioSource.PlayOneShot(sonidos[soundName]);
+        }
     }
 }
 

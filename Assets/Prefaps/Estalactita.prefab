@@ -108,6 +108,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   trapDamage: 10
+  fallingSound: {fileID: 8300000, guid: b51e945b3beac6b4a98f2cb6398b4257, type: 3}
+  impactSound: {fileID: 8300000, guid: 7b2e3b6b56b892243871e44b4c225605, type: 3}
 --- !u!61 &5346967209192082857
 BoxCollider2D:
   m_ObjectHideFlags: 0

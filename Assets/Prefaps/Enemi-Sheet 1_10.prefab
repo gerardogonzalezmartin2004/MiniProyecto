@@ -100,7 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocityBullet: 10
   damage: 1
-  destroyBullet: 6
+  destroyBullet: 1.5
 --- !u!58 &-7762661452738928031
 CircleCollider2D:
   m_ObjectHideFlags: 0
