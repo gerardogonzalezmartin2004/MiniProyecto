@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointsToAdd: 10
-  collectSound: {fileID: 8300000, guid: 3fbf62b1edfb25747895c0af381b58f8, type: 3}
+  collectSound: {fileID: 8300000, guid: e467425e6995bff46b0746e9ce33315a, type: 3}
 --- !u!61 &4187939986316665723
 BoxCollider2D:
   m_ObjectHideFlags: 0

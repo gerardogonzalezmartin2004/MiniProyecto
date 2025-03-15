@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pocion: 1
-  healSound: {fileID: 8300000, guid: 742d82ccb2a1b0044afda4c4205740a8, type: 3}
+  healSound: {fileID: 8300000, guid: 241a98630dc85d24c9616d4999f89f97, type: 3}
 --- !u!61 &3672401521109489093
 BoxCollider2D:
   m_ObjectHideFlags: 0
