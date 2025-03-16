@@ -14,6 +14,7 @@ public class TriggerSound : MonoBehaviour
     
     void OnTriggerEnter2D(Collider2D other)
     {
-       audioSource.Play();        
+       audioSource.Play();
+       soundTrigger.enabled = false;
     }
 }
