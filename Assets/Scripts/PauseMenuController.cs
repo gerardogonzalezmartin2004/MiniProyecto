@@ -18,6 +18,7 @@ public class PauseMenuController : MonoBehaviour
        
     void Update()
     {
+        /*
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (!isPaused)
@@ -31,7 +32,7 @@ public class PauseMenuController : MonoBehaviour
                 ContinueButton();
             }
         }
-       
+        */
     }
 
     public void RestartButton()
@@ -70,6 +71,10 @@ public class PauseMenuController : MonoBehaviour
         {
             Debug.Log("El nombre de la escena o la escena, no esta configurado correctamente");
         }
+    }
+    public void MenuScene()
+    {
+        SceneManager.LoadScene("Menu");
     }
 
 }

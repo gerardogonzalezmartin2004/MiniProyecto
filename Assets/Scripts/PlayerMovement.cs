@@ -203,6 +203,8 @@ public class PlayerMovement : MonoBehaviour
             currentHealth -= damageAmount;
             currentHealth = Mathf.Clamp(currentHealth, minHealth, maxHealth);
             Debug.Log("El jugador se ha dañado. Su vida actual es :" + currentHealth);
+            animator.SetBool("IsHit", true);
+            StartCoroutine(ResetHitAnimation());
             if (currentHealth >= 0 && currentHealth < lifeBar.Length)
             {
                 lifeBar[currentHealth].SetActive(false);
@@ -317,6 +319,13 @@ public class PlayerMovement : MonoBehaviour
             audioSource.PlayOneShot(sonidos[soundName]);
         }
     }
+    
+    private IEnumerator ResetHitAnimation()
+    {
+        yield return new WaitForSeconds(0.17f); // Ajusta el tiempo según la duración de la animación
+        animator.SetBool("IsHit", false);
+    }
+    
 }
 
 
